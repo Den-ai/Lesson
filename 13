@@ -1,0 +1,197 @@
+#1
+def fibonachiy_gen(limit):
+    a, b = 0, 1
+    while a <= limit:
+        yield a
+        a, b = b, a + b
+
+try:
+    user_input = int(input('Enter the number up to which you want to display the Fibonacci numbers: '))
+    if user_input < 0:
+        print('Please enter a non-negative number')
+    else:
+        print(f'Fibonacci numbers up to, {user_input}: ')
+        for number in fibonachiy_gen(user_input):
+            print(number)
+
+except ValueError:
+    print('Please enter a valid integer')
+
+
+
+
+#2
+def cyclic_gen(sequence):
+    while True:
+        for number in sequence:
+            yield number
+
+try:
+    count = int(input('Enter the number of numbers to output: '))
+    if count <= 0:
+        print('Please enter a positive integer')
+    else:
+        sequence = [1, 2, 3]
+        cyclic = cyclic_gen(sequence)
+
+        for _ in range(count):
+            print(next(cyclic), end= '')
+
+except ValueError:
+    print('Please enter a valid integer')
+
+
+
+
+#3
+class Pizza:
+    def __init__(self, size):
+        self.size = size
+        self.cheese = False
+        self.pepperoni = False
+        self.mushrooms = False
+        self.onion = False
+        self.bacon = False
+
+    def __str__(self):
+        ingredients = []
+        if self.cheese:
+            ingredients.append('cheese')
+        if self.pepperoni:
+            ingredients.append('pepperoni')
+        if self.mushrooms:
+            ingredients.append('mushrooms')
+        if self.onion:
+            ingredients.append('onion')
+        if self.bacon:
+            ingredients.append('bacon')
+        return f'Pizza(size= {self.size}, ingredients= {', '.join(ingredients)})'
+
+class PizzaBuilder:
+    def __init__(self, size):
+        self.pizza = Pizza(size)
+
+    def add_cheese(self):
+        self.pizza.cheese = True
+        return self
+
+    def add_pepperoni(self):
+        self.pizza.pepperoni = True
+        return self
+
+    def add_mushrooms(self):
+        self.pizza.mushrooms = True
+        return self
+
+    def add_onions(self):
+        self.pizza.onions = True
+        return self
+
+    def add_bacon(self):
+        self.pizza.bacon = True
+        return self
+
+    def build(self):
+        return self.pizza
+
+
+class PizzaDirector:
+    def __init__(self, builder):
+        self.builder = builder
+
+    def make_pizza(self):
+        return (self.builder
+                .add_cheese()
+                .add_pepperoni()
+                .add_mushrooms()
+                .add_onions()
+                .add_bacon()
+                .build())
+
+
+if __name__ == "__main__":
+    size = "large"
+    builder = PizzaBuilder(size)
+    director = PizzaDirector(builder)
+
+    pizza = director.make_pizza()
+    print(pizza)
+
+
+
+
+#4
+from abc import ABC, abstractmethod
+
+class Animal(ABC):
+    @abstractmethod
+    def speak(self):
+        pass
+
+class Dog(Animal):
+    def speak(self):
+        return 'Woof!'
+
+class Cat(Animal):
+    def speak(self):
+        return 'Meow!'
+
+class AnimalFactory:
+    @staticmethod
+    def create_animal(animal_type):
+        if animal_type.lower() == 'dog':
+            return Dog()
+        elif animal_type.lower() == 'cat':
+            return Cat()
+        else:
+            raise ValueError('Unknown animal type!')
+
+if __name__ == '__main__':
+    factory = AnimalFactory()
+    dog = factory.create_animal('dog')
+    print('Dog says:', dog.speak())
+
+    cat = factory.create_animal('cat')
+    print('Cat says:', cat.speak())
+
+
+
+
+#5
+class Strategy:
+    def execute(self, a, b):
+        pass
+
+class Addition(Strategy):
+    def execute(self, a, b):
+        return a + b
+
+class Subtraction(Strategy):
+    def execute(self, a, b):
+        return a - b
+
+class Multiplication(Strategy):
+    def execute(self, a, b):
+        return a * b
+
+class Division(Strategy):
+    def execute(self, a, b):
+        if b == 0:
+            raise ValueError('Division by zero is not allowed.')
+        return a / b
+
+class Calculator:
+    def __init__(self, strategy: Strategy):
+        self._strategy = strategy
+
+    def set_strategy(self, strategy: Strategy):
+        self._strategy = strategy
+
+    def calculate(self, a, b):
+        return self._strategy.execute(a, b)
+
+
+
+
+
+
